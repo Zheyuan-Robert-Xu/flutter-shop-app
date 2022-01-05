@@ -11,8 +11,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (ctx) => Products(),
+      //only works with objects based on classes that use the ChangeNotifier mixin(Products)
+      create: (ctx) =>
+          Products(), // when instantiate a class,use create method for efficiency
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'MyShop',
         theme: ThemeData(
           primarySwatch: Colors.purple,
