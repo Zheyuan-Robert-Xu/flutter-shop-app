@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_app/screens/orders_screen.dart';
 
+import './providers/orders.dart';
 import '../screens/cart_screen.dart';
 import './providers/cart.dart';
 import '../screens/product_detail_screen.dart';
@@ -22,6 +24,7 @@ class MyApp extends StatelessWidget {
           //only works with objects based on classes that use the ChangeNotifier mixin(Products)
           create: (ctx) => Cart(),
         ),
+        ChangeNotifierProvider(create: (ctx) => Orders())
       ],
       // when instantiate a class,use create method for efficiency
       child: MaterialApp(
@@ -36,6 +39,7 @@ class MyApp extends StatelessWidget {
         routes: {
           ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),
           CartScreen.routeName: (ctx) => CartScreen(),
+          OrdersScreen.routeName: (ctx) => OrdersScreen(),
         },
       ),
     );

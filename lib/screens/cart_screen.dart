@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../providers/orders.dart';
 import '../providers/cart.dart' show Cart; //only use Cart
 import '../widgets/cart_item.dart' as ci;
 
@@ -44,7 +45,11 @@ class CartScreen extends StatelessWidget {
                     backgroundColor: Theme.of(context).primaryColor,
                   ),
                   FlatButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Provider.of<Orders>(context, listen: false).addOrder(
+                          cart.items.values.toList(), cart.totalAmount);
+                      cart.clear();
+                    },
                     child: Text('ORDER NOW'),
                     textColor: Theme.of(context).primaryColor,
                   )
@@ -62,6 +67,9 @@ class CartScreen extends StatelessWidget {
                   id: cart.items.values
                       .toList()[i]
                       .id, //cart.items is map. And need to change it to list
+                  productId: cart.items.keys.toList()[
+                      i], // the key as value On the Map class we have a values and a keys property, which return Iterables:
+                  // it uses cart in cart.dart and this cart does not have productId
                   price: cart.items.values.toList()[i].price,
                   quantity: cart.items.values.toList()[i].quantity,
                   title: cart.items.values.toList()[i].title),

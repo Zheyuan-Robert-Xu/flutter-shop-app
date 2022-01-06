@@ -52,4 +52,14 @@ class Cart with ChangeNotifier {
     }
     notifyListeners(); //  to notify any clients the object may have changed.
   }
+
+  void removeItem(String productId) {
+    _items!.remove(productId);
+    notifyListeners();
+  }
+
+  void clear() {
+    _items = {};
+    notifyListeners();
+  }
 }
