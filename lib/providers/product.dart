@@ -9,7 +9,7 @@ class Product with ChangeNotifier {
   final String? description;
   final double? price;
   final String? imageUrl;
-  bool? isFavorite;
+  bool isFavorite;
 
   Product(
       {required this.id,
@@ -26,7 +26,7 @@ class Product with ChangeNotifier {
 
   Future<void> toggleFavoriteStatus() async {
     final oldStatus = isFavorite;
-    isFavorite = !isFavorite!;
+    isFavorite = !isFavorite;
     notifyListeners();
     final url = Uri.parse(
         'https://flutter-update-5f68f-default-rtdb.asia-southeast1.firebasedatabase.app/products/$id.json');
@@ -38,10 +38,10 @@ class Product with ChangeNotifier {
         }),
       );
       if (response.statusCode >= 400) {
-        _setFavValue(oldStatus!);
+        _setFavValue(oldStatus);
       }
     } catch (error) {
-      _setFavValue(oldStatus!);
+      _setFavValue(oldStatus);
     }
   }
 }

@@ -43,6 +43,9 @@ class Products with ChangeNotifier {
     // ),
   ]; // not final it may changes
   // var _showFavoritesOnly = false;
+  String? authToken = ''; //must be set as pass the value between pages
+
+  Products(this.authToken, this._items);
 
   List<Product> get items {
     // if (_showFavoritesOnly) {
@@ -56,7 +59,7 @@ class Products with ChangeNotifier {
   }
 
   List<Product> get favoriteItems {
-    return _items.where((prodItem) => prodItem.isFavorite!).toList();
+    return _items.where((prodItem) => prodItem.isFavorite).toList();
   }
 
   Product findById(String id) {
@@ -75,7 +78,8 @@ class Products with ChangeNotifier {
 
   Future<void> fetchAndSetProducts() async {
     final url = Uri.parse(
-        'https://flutter-update-5f68f-default-rtdb.asia-southeast1.firebasedatabase.app/products.json');
+        'https://flutter-update-5f68f-default-rtdb.asia-southeast1.firebasedatabase.app/products.json?auth=$authToken');
+
     try {
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
