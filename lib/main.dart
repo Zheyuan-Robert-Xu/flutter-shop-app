@@ -28,7 +28,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProxyProvider<Auth, Products?>(
           //only works with objects based on classes that use the ChangeNotifier mixin(Products)
-          update: (ctx, auth, previousProducts) => Products(auth.token,
+          update: (ctx, auth, previousProducts) => Products(
+              auth.token,
+              auth.userId as String,
               previousProducts == null ? [] : previousProducts.items),
           create: (_) {},
           // create: (ctx)=>Products(),
@@ -37,7 +39,13 @@ class MyApp extends StatelessWidget {
           //only works with objects based on classes that use the ChangeNotifier mixin(Products)
           create: (ctx) => Cart(),
         ),
-        ChangeNotifierProvider(create: (ctx) => Orders())
+        ChangeNotifierProxyProvider<Auth, Orders?>(
+          //only works with objects based on classes that use the ChangeNotifier mixin(Products)
+          update: (ctx, auth, previousOrders) => Orders(
+              auth.token, previousOrders == null ? [] : previousOrders.orders),
+          create: (_) {},
+          // create: (ctx)=>Products(),
+        ),
       ],
       // when instantiate a class,use create method for efficiency
       child: Consumer<Auth>(

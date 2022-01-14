@@ -44,8 +44,9 @@ class Products with ChangeNotifier {
   ]; // not final it may changes
   // var _showFavoritesOnly = false;
   String? authToken = ''; //must be set as pass the value between pages
+  final String userId;
 
-  Products(this.authToken, this._items);
+  Products(this.authToken, this.userId, this._items);
 
   List<Product> get items {
     // if (_showFavoritesOnly) {
@@ -77,7 +78,7 @@ class Products with ChangeNotifier {
   // }
 
   Future<void> fetchAndSetProducts() async {
-    final url = Uri.parse(
+    var url = Uri.parse(
         'https://flutter-update-5f68f-default-rtdb.asia-southeast1.firebasedatabase.app/products.json?auth=$authToken');
 
     try {
@@ -86,6 +87,10 @@ class Products with ChangeNotifier {
       if (extractedData == null) {
         return;
       }
+      url = Uri.parse(
+          'https://flutter-update-5f68f-default-rtdb.asia-southeast1.firebasedatabase.app/userFavorites/$userId.json?auth=$authToken');
+      final favoriteResponse = await http.get(url);
+      final favoriteData = json.decode(favoriteResponse.body);
       final List<Product> loadedProducts = [];
       extractedData.forEach((prodId, prodData) {
         loadedProducts.add(Product(
@@ -93,6 +98,10 @@ class Products with ChangeNotifier {
             title: prodData['title'],
             description: prodData['description'],
             price: prodData['price'],
+            isFavorite: favoriteData == null
+                ? false
+                : favoriteData[prodId] ??
+                    false, //favoriteData[prodId] if is null, set it to false
             imageUrl: prodData['imageUrl']));
       });
       _items = loadedProducts;
@@ -105,7 +114,7 @@ class Products with ChangeNotifier {
   Future<void> addProduct(Product product) async {
     //the following function is future
     final url = Uri.parse(
-        'https://flutter-update-5f68f-default-rtdb.asia-southeast1.firebasedatabase.app/products.json'); // will create product as a folder
+        'https://flutter-update-5f68f-default-rtdb.asia-southeast1.firebasedatabase.app/products.json?auth=$authToken'); // will create product as a folder
     try {
       final response =
           await http //wait here until this function is finished and you will get its return value.
@@ -115,7 +124,6 @@ class Products with ChangeNotifier {
                     'description': product.description,
                     'imageUrl': product.imageUrl,
                     'price': product.price,
-                    'isFavorite': product.isFavorite
                   }));
       final newProduct = Product(
           id: json.decode(response.body)['name'],
@@ -140,7 +148,7 @@ class Products with ChangeNotifier {
     final prodIndex = _items.indexWhere((prod) => prod.id == id);
     if (prodIndex >= 0) {
       final url = Uri.parse(
-          'https://flutter-update-5f68f-default-rtdb.asia-southeast1.firebasedatabase.app/products/$id.json'); //cannot be const as it is dynamic thus not const at compilation
+          'https://flutter-update-5f68f-default-rtdb.asia-southeast1.firebasedatabase.app/products/$id.json?auth=$authToken'); //cannot be const as it is dynamic thus not const at compilation
 
       await http.patch(
         url,
@@ -160,7 +168,7 @@ class Products with ChangeNotifier {
 
   Future<void> deleteProduct(String id) async {
     final url = Uri.parse(
-        'https://flutter-update-5f68f-default-rtdb.asia-southeast1.firebasedatabase.app/products/$id.json');
+        'https://flutter-update-5f68f-default-rtdb.asia-southeast1.firebasedatabase.app/products/$id.json?auth=$authToken');
     final existingProductIndex = _items.indexWhere((prod) => prod.id == id);
     Product? existingProduct = _items[existingProductIndex];
 
@@ -174,5 +182,9 @@ class Products with ChangeNotifier {
       throw HttpException('Could not delete product.');
     }
     existingProduct = null;
+  }
+
+  void refreshProductList() {
+    notifyListeners();
   }
 }
