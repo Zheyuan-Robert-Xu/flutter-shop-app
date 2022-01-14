@@ -49,7 +49,9 @@ class AppDrawer extends StatelessWidget {
             leading: Icon(Icons.exit_to_app),
             title: Text('Logout'),
             onTap: () {
+              Navigator.of(context).pop();
               Navigator.of(context).pushReplacementNamed(
+                  //avoid to have unexpected behaviour when logged out
                   '/'); //using Navigator.of(context).pop() still not going anywhere
               //pushReplacementNamed Replace the current route of the navigator by pushing the route named [routeName] and then disposing the previous route once the new route has finished animating in.
               //The pop() method removes the current Route from the stack of routes managed by the Navigator .
