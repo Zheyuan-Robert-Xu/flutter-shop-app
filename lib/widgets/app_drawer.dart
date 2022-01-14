@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:shop_app/screens/orders_screen.dart';
-import 'package:shop_app/screens/user_products_screen.dart';
+import 'package:provider/provider.dart';
+
+import '../providers/auth.dart';
+import '../screens/orders_screen.dart';
+import '../screens/user_products_screen.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({Key? key}) : super(key: key);
@@ -39,6 +42,18 @@ class AppDrawer extends StatelessWidget {
             onTap: () {
               Navigator.of(context)
                   .pushReplacementNamed(UserProductsScreen.routeName);
+            },
+          ),
+          Divider(),
+          ListTile(
+            leading: Icon(Icons.exit_to_app),
+            title: Text('Logout'),
+            onTap: () {
+              Navigator.of(context).pushReplacementNamed(
+                  '/'); //using Navigator.of(context).pop() still not going anywhere
+              //pushReplacementNamed Replace the current route of the navigator by pushing the route named [routeName] and then disposing the previous route once the new route has finished animating in.
+              //The pop() method removes the current Route from the stack of routes managed by the Navigator .
+              Provider.of<Auth>(context, listen: false).logout();
             },
           ),
         ],

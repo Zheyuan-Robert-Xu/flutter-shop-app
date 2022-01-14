@@ -26,13 +26,13 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (ctx) => Auth(),
         ),
-        ChangeNotifierProxyProvider<Auth, Products?>(
+        ChangeNotifierProxyProvider<Auth, Products>(
           //only works with objects based on classes that use the ChangeNotifier mixin(Products)
           update: (ctx, auth, previousProducts) => Products(
               auth.token,
               auth.userId as String,
               previousProducts == null ? [] : previousProducts.items),
-          create: (_) {},
+          create: (_) => Products('', '', []),
           // create: (ctx)=>Products(),
         ),
         ChangeNotifierProvider(
@@ -41,8 +41,8 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProxyProvider<Auth, Orders?>(
           //only works with objects based on classes that use the ChangeNotifier mixin(Products)
-          update: (ctx, auth, previousOrders) => Orders(
-              auth.token, previousOrders == null ? [] : previousOrders.orders),
+          update: (ctx, auth, previousOrders) => Orders(auth.token, auth.userId,
+              previousOrders == null ? [] : previousOrders.orders),
           create: (_) {},
           // create: (ctx)=>Products(),
         ),

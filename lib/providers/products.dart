@@ -43,8 +43,8 @@ class Products with ChangeNotifier {
     // ),
   ]; // not final it may changes
   // var _showFavoritesOnly = false;
-  String? authToken = ''; //must be set as pass the value between pages
-  final String userId;
+  String? authToken; //must be set as pass the value between pages
+  String? userId;
 
   Products(this.authToken, this.userId, this._items);
 
