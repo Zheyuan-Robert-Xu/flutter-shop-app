@@ -33,7 +33,7 @@ class Auth with ChangeNotifier {
   Future<void> _authenticate(
       String? email, String? password, String? urlSegment) async {
     final url = Uri.parse(
-        'https://identitytoolkit.googleapis.com/v1/accounts:$urlSegment?key=AIzaSyDq0-tz7N0-MyRwbLwq3BJEaGQ2QOebTMk'); //runtime constant not compilation constant
+        'https://identitytoolkit.googleapis.com/v1/accounts:$urlSegment?key=<Your key>'); //Web-API keyruntime constant not compilation constant
     try {
       final response = await http.post(url,
           body: json.encode({
@@ -53,7 +53,7 @@ class Auth with ChangeNotifier {
       _autoLogout();
       notifyListeners();
       final prefs =
-          await SharedPreferences.getInstance(); //SharedPreferences is Future
+          await SharedPreferences.getInstance(); //SharedPreferences is Future--store data in device
       final userData = json.encode({
         'token': _token,
         'userId': _userId,
@@ -106,7 +106,7 @@ class Auth with ChangeNotifier {
     }
     notifyListeners();
     final prefs = await SharedPreferences.getInstance();
-    prefs.clear();
+    prefs.clear(); //remove all the entries from the map
   }
 
   void _autoLogout() {
