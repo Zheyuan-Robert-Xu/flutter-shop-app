@@ -17,26 +17,34 @@ class ProductDetailScreen extends StatelessWidget {
         productId); //listen: true--->build method of the widget in which you're using provider of will
     // will return whenever the provided object-- In short rebuilt
     return Scaffold(
-      appBar: AppBar(
-        title: Text(loadedProduct.title as String),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            Container(
-              height: 300,
-              width: double.infinity,
-              child: Image.network(
-                loadedProduct.imageUrl as String,
-                fit: BoxFit.cover,
+      // appBar: AppBar(
+      //   title: Text(loadedProduct.title as String),
+      // ),
+      body: CustomScrollView(
+        slivers: <Widget>[
+          SliverAppBar(
+            expandedHeight: 300,
+            pinned: true,
+            flexibleSpace: FlexibleSpaceBar(
+              title: Text(loadedProduct.title!),
+              background: Hero(
+                tag: loadedProduct.id!,
+                child: Image.network(
+                  loadedProduct.imageUrl as String,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
-            const SizedBox(
+          ),
+          SliverList(
+              delegate: SliverChildListDelegate([
+            SizedBox(
               height: 10,
             ),
             Text(
               '\$${loadedProduct.price}',
               style: TextStyle(color: Colors.grey, fontSize: 20),
+              textAlign: TextAlign.center,
             ),
             SizedBox(
               height: 10,
@@ -50,8 +58,11 @@ class ProductDetailScreen extends StatelessWidget {
                 softWrap: true,
               ),
             ),
-          ],
-        ),
+            SizedBox(
+              height: 800,
+            ),
+          ]))
+        ],
       ),
     );
   }

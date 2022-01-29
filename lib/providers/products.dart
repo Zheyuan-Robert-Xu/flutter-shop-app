@@ -129,7 +129,8 @@ class Products with ChangeNotifier {
                     'creatorId': userId,
                   }));
       final newProduct = Product(
-          id: json.decode(response.body)['name'],
+          id: json.decode(
+              response.body)['name'], //need to set the name for each item
           title: product.title,
           description: product.description,
           price: product.price,

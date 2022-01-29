@@ -27,9 +27,15 @@ class ProductItem extends StatelessWidget {
             Navigator.of(context).pushNamed(ProductDetailScreen.routeName,
                 arguments: product.id);
           },
-          child: Image.network(
-            product.imageUrl as String,
-            fit: BoxFit.cover, // cover all the space
+          child: Hero(
+            // Hero need to set another screen to pop into,click product detail and the screen pops into
+            tag: product
+                .id!, //be unique per imageas flutter does not know which image to shift over
+            child: FadeInImage(
+              placeholder: AssetImage('assets/images/product-placeholder.png'),
+              image: NetworkImage(product.imageUrl as String),
+              fit: BoxFit.cover,
+            ),
           ),
         ),
         footer: GridTileBar(
