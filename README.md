@@ -1,4 +1,5 @@
-# shop_app
+# shop_app ![example workflow](https://github.com/github/docs/actions/workflows/main.yml/badge.svg)
+
 
 A new Flutter project.
 
